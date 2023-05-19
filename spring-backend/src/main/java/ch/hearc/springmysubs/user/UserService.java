@@ -1,27 +1,22 @@
 package ch.hearc.springmysubs.user;
 
 
-import ch.hearc.springmysubs.security.BearerToken;
 import ch.hearc.springmysubs.auth.LoginDTO;
 import ch.hearc.springmysubs.auth.RegisterDTO;
 import ch.hearc.springmysubs.role.IRoleDAO;
 import ch.hearc.springmysubs.role.Role;
 import ch.hearc.springmysubs.role.RoleName;
+import ch.hearc.springmysubs.security.BearerToken;
 import ch.hearc.springmysubs.security.JwtUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -143,21 +138,27 @@ public class UserService implements IUserService {
      * @param loginDto
      */
     @Override
-    public String authenticate(LoginDTO loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getUsername(),
-                        loginDto.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    public ResponseEntity authenticate(LoginDTO loginDto) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginDto.getUsername(),
+                            loginDto.getPassword()
+                    )
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = userDAO.findByUsername(loginDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + loginDto.getUsername()));
-        String token = jwtUtilities.generateToken(
-                loginDto.getUsername(),
-                userDAO.getRoles(user).stream().map(Role::getRoleName).collect(Collectors.toList())
-        );
+            User user = userDAO.findByUsername(loginDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + loginDto.getUsername()));
+            String token = jwtUtilities.generateToken(
+                    loginDto.getUsername(),
+                    userDAO.getRoles(user).stream().map(Role::getRoleName).collect(Collectors.toList())
+            );
 
-        return token;
+            return ResponseEntity.ok(new BearerToken(token, "Bearer "));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
+
 }

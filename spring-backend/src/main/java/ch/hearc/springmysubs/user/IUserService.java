@@ -17,5 +17,5 @@ public interface IUserService {
     public UserDTO findByUsername(String username);
     public List<Role> getRoles(UserDTO user);
     public ResponseEntity<?> register(RegisterDTO registerDto);
-    public String authenticate(LoginDTO loginDto);
+    public ResponseEntity<?> authenticate(LoginDTO loginDto);
 }

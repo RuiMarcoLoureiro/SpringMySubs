@@ -20,7 +20,6 @@ const authApi = createApi({
             query: ({ name, password }) => ({
                 url: "auth/authenticate",
                 method: "POST",
-                credentials: "include",
                 body: { username: name, password },
             }),
         }),
@@ -28,7 +27,6 @@ const authApi = createApi({
             query: ({ name, password }) => ({
                 url: "auth/register",
                 method: "POST",
-                credentials: "include",
                 body: { username : name, password },
             }),
         }),

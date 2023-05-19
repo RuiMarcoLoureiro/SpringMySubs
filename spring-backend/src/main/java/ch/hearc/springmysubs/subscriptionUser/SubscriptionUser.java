@@ -1,31 +1,42 @@
 package ch.hearc.springmysubs.subscriptionUser;
 
+import ch.hearc.springmysubs.shared.BaseEntity;
 import ch.hearc.springmysubs.subscription.Subscription;
 import ch.hearc.springmysubs.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
-public class SubscriptionUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper = true) // Take into account the parent attributes in equals and hashcode
+public class SubscriptionUser extends BaseEntity {
+    @EmbeddedId // JPA annotations (composite key)
+    private SubscriptionUserPK id;
 
     @NotNull
     private Boolean accepted = false;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("user_id") // user_id is the name of the attribute in the SubscriptionUserPK class
     @JoinColumn(name = "user_id", nullable = false) // user_id is the name of the column in the table subscriptions_users
-    private User users;
+    private User user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId("subscription_id") // subscription_id is the name of the attribute in the SubscriptionUserPK class
     @JoinColumn(name = "subscription_id", nullable = false) // subscription_id is the name of the column in the table subscriptions_users
-    private Subscription subscriptions;
+    private Subscription subscription;
+
+    public SubscriptionUser(User user, Subscription subscription) {
+        this.user = user;
+        this.subscription = subscription;
+        this.id = new SubscriptionUserPK(subscription.getId(), user.getId());
+    }
 
 }

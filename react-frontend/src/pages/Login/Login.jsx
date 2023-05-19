@@ -25,8 +25,8 @@ const validationSchema = yup.object({
         .required("Le mot de passe est requis"),
 });
 
-const defaultName = "Lucas";
-const defaultPassword = "5678";
+const defaultName = "admin";
+const defaultPassword = "adminPassword";
 
 const Login = () => {
     const [login, { isLoading }] = useLoginMutation();
@@ -42,12 +42,14 @@ const Login = () => {
         onSubmit: async (values) => {
             try {
                 const { name, password } = values;
-                const result = await login({
+                const response = await login({
                     name,
                     password,
                 }).unwrap();
 
-                dispatch(setUserAction(result));
+                const { accessToken : token } = response;
+
+                dispatch(setUserAction({ name, token }));
                 navigate(subscriptionsPath);
 
                 toast.success(`Bienvenue ${name}👋`, {

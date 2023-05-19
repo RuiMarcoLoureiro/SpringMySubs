@@ -3,6 +3,7 @@ package ch.hearc.springmysubs.period;
 import ch.hearc.springmysubs.category.Category;
 import ch.hearc.springmysubs.category.CategoryDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

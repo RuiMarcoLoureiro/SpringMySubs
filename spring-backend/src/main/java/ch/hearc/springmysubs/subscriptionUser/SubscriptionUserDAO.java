@@ -17,26 +17,31 @@ public class SubscriptionUserDAO implements ISubscriptionUserDAO{
 
     @Override
     public void save(SubscriptionUser subscriptionUser) {
-
+        subscriptionUserRepository.save(subscriptionUser);
     }
 
     @Override
     public Optional<SubscriptionUser> get(Long id) {
-        return Optional.empty();
+        return subscriptionUserRepository.findById(id);
     }
 
     @Override
     public List<SubscriptionUser> getAll() {
-        return null;
+        return subscriptionUserRepository.findAll();
     }
 
     @Override
     public void update(SubscriptionUser subscriptionUser) {
-
+        subscriptionUserRepository.save(subscriptionUser);
     }
 
     @Override
     public void delete(SubscriptionUser subscriptionUser) {
+        subscriptionUserRepository.delete(subscriptionUser);
+    }
 
+    @Override
+    public List<SubscriptionUser> findAllByUserId(Long userId) {
+        return subscriptionUserRepository.findAllByUserId(userId);
     }
 }
