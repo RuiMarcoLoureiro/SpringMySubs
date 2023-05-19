@@ -1,8 +1,8 @@
 package ch.hearc.springmysubs.user;
 
 
-import ch.hearc.springmysubs.auth.LoginDTO;
-import ch.hearc.springmysubs.auth.RegisterDTO;
+import ch.hearc.springmysubs.auth.requests.LoginRequest;
+import ch.hearc.springmysubs.auth.requests.RegisterRequest;
 import ch.hearc.springmysubs.role.Role;
 import org.springframework.http.ResponseEntity;
 
@@ -16,6 +16,6 @@ public interface IUserService {
     public void deleteUser(UserDTO user);
     public UserDTO findByUsername(String username);
     public List<Role> getRoles(UserDTO user);
-    public ResponseEntity<?> register(RegisterDTO registerDto);
-    public ResponseEntity<?> authenticate(LoginDTO loginDto);
+    public ResponseEntity<?> register(RegisterRequest registerRequest);
+    public ResponseEntity<?> authenticate(LoginRequest loginRequest);
 }

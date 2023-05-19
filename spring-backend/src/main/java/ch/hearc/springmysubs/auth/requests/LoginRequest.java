@@ -1,11 +1,11 @@
-package ch.hearc.springmysubs.auth;
+package ch.hearc.springmysubs.auth.requests;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class RegisterDTO implements Serializable {
+public class LoginRequest implements Serializable {
     private String username;
     private String password;
 }

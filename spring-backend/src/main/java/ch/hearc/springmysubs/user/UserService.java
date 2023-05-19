@@ -1,8 +1,8 @@
 package ch.hearc.springmysubs.user;
 
 
-import ch.hearc.springmysubs.auth.LoginDTO;
-import ch.hearc.springmysubs.auth.RegisterDTO;
+import ch.hearc.springmysubs.auth.requests.LoginRequest;
+import ch.hearc.springmysubs.auth.requests.RegisterRequest;
 import ch.hearc.springmysubs.role.IRoleDAO;
 import ch.hearc.springmysubs.role.Role;
 import ch.hearc.springmysubs.role.RoleName;
@@ -111,23 +111,23 @@ public class UserService implements IUserService {
     /**
      * Register a user
      *
-     * @param registerDto
+     * @param registerRequest
      */
     @Override
-    public ResponseEntity<?> register(RegisterDTO registerDto) {
-        if (userDAO.findByUsername(registerDto.getUsername()) != null) {
+    public ResponseEntity<?> register(RegisterRequest registerRequest) {
+        if (userDAO.findByUsername(registerRequest.getUsername()) != null) {
             return ResponseEntity.badRequest().body("Username is already taken.");
         } else {
             User user = new User();
-            user.setUsername(registerDto.getUsername());
-            user.setPassword(registerDto.getPassword());
+            user.setUsername(registerRequest.getUsername());
+            user.setPassword(registerRequest.getPassword());
             // by default, a new user is a USER
             Role role = roleDAO.findByName(RoleName.USER);
             user.setRoles(Set.of(role));
 
             userDAO.save(user);
 
-            String token = jwtUtilities.generateToken(registerDto.getUsername(), List.of(role.getRoleName()));
+            String token = jwtUtilities.generateToken(registerRequest.getUsername(), List.of(role.getRoleName()));
             return ResponseEntity.ok(new BearerToken(token, "Bearer "));
         }
     }
@@ -135,22 +135,22 @@ public class UserService implements IUserService {
     /**
      * Authenticate a user
      *
-     * @param loginDto
+     * @param loginRequest
      */
     @Override
-    public ResponseEntity authenticate(LoginDTO loginDto) {
+    public ResponseEntity authenticate(LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginDto.getUsername(),
-                            loginDto.getPassword()
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            User user = userDAO.findByUsername(loginDto.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + loginDto.getUsername()));
+            User user = userDAO.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + loginRequest.getUsername()));
             String token = jwtUtilities.generateToken(
-                    loginDto.getUsername(),
+                    loginRequest.getUsername(),
                     userDAO.getRoles(user).stream().map(Role::getRoleName).collect(Collectors.toList())
             );
 

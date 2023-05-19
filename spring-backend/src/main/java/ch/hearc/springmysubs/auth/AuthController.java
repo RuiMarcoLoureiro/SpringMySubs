@@ -1,5 +1,7 @@
 package ch.hearc.springmysubs.auth;
 
+import ch.hearc.springmysubs.auth.requests.LoginRequest;
+import ch.hearc.springmysubs.auth.requests.RegisterRequest;
 import ch.hearc.springmysubs.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDto) {
-        return userService.register(registerDto);
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        return userService.register(registerRequest);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody LoginDTO loginDto) {
-        return userService.authenticate(loginDto);
+    public ResponseEntity<?> authenticate(@RequestBody LoginRequest loginRequest) {
+        return userService.authenticate(loginRequest);
     }
 
 }
