@@ -3,7 +3,7 @@ export const APP_NAME = "Show My Subs";
 const domain = "localhost";
 
 // API ROUTES
-export const apiBaseUrl = `http://${domain}:8000/api`;
+export const apiBaseUrl = `http://${domain}:9090/api/v1`;
 
 // NAVIGATION ROUTES
 export const appPath = "/app";

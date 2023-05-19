@@ -15,20 +15,19 @@ const periodsApi = createApi({
         // Meaning for reading data from the server, we use queries.
         getPeriods: builder.query({
             query: () => ({
-                url: "getPeriods",
+                url: "period/",
                 method: "GET",
-                credentials: "include",
             }),
             // Transform and normalize API response
             transformResponse: (response) => {
                 return response.map((row) => {
                     const { id, name } = row;
-                    switch (id) {
-                        case 2:
+                    switch (name) {
+                        case "Weekly":
                             return { ...row, factor: 7 };
-                        case 3:
+                        case "Monthly":
                             return { ...row, factor: 30.437 };
-                        case 4:
+                        case "Yearly":
                             return { ...row, factor: 365.2422 };
                         default:
                             return { ...row, factor: 1 };

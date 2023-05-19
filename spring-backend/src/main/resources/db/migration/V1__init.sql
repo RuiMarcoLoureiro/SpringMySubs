@@ -5,17 +5,17 @@ CREATE TABLE category
     CONSTRAINT pk_category PRIMARY KEY (id)
 );
 
-CREATE TABLE periods
+CREATE TABLE period
 (
     id   BIGINT AUTO_INCREMENT NOT NULL,
     name VARCHAR(255)          NOT NULL,
-    CONSTRAINT pk_periods PRIMARY KEY (id)
+    CONSTRAINT pk_period PRIMARY KEY (id)
 );
 
 CREATE TABLE `role`
 (
     id   BIGINT AUTO_INCREMENT NOT NULL,
-    name VARCHAR(255)          NULL,
+    name VARCHAR(255)          NOT NULL,
     CONSTRAINT pk_role PRIMARY KEY (id)
 );
 
@@ -53,6 +53,12 @@ CREATE TABLE users_roles
     CONSTRAINT pk_users_roles PRIMARY KEY (role_id, user_id)
 );
 
+ALTER TABLE `role`
+    ADD CONSTRAINT uc_role_name UNIQUE (name);
+
+ALTER TABLE user
+    ADD CONSTRAINT uc_user_username UNIQUE (username);
+
 ALTER TABLE subscription_user
     ADD CONSTRAINT FK_SUBSCRIPTIONUSER_ON_SUBSCRIPTION FOREIGN KEY (subscription_id) REFERENCES subscription (id);
 
@@ -63,7 +69,7 @@ ALTER TABLE subscription
     ADD CONSTRAINT FK_SUBSCRIPTION_ON_CATEGORIES FOREIGN KEY (categories_id) REFERENCES category (id);
 
 ALTER TABLE subscription
-    ADD CONSTRAINT FK_SUBSCRIPTION_ON_PERIODS FOREIGN KEY (periods_id) REFERENCES periods (id);
+    ADD CONSTRAINT FK_SUBSCRIPTION_ON_PERIODS FOREIGN KEY (periods_id) REFERENCES period (id);
 
 ALTER TABLE users_roles
     ADD CONSTRAINT fk_userol_on_role FOREIGN KEY (role_id) REFERENCES `role` (id);

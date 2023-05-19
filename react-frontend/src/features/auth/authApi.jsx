@@ -18,18 +18,18 @@ const authApi = createApi({
         // As opposed to queries, mutations endpoints are used for creating, updating, and deleting data.
         login: builder.mutation({
             query: ({ name, password }) => ({
-                url: "login",
+                url: "auth/authenticate",
                 method: "POST",
                 credentials: "include",
-                body: { name, password },
+                body: { username: name, password },
             }),
         }),
         register: builder.mutation({
             query: ({ name, password }) => ({
-                url: "register",
+                url: "auth/register",
                 method: "POST",
                 credentials: "include",
-                body: { name, password },
+                body: { username : name, password },
             }),
         }),
     }),

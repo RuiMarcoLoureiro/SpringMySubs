@@ -10,9 +10,12 @@ import lombok.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +28,8 @@ public class Category {
 
     @OneToMany(mappedBy = "categories")
     private Set<Subscription> subscriptions = new LinkedHashSet<>();
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

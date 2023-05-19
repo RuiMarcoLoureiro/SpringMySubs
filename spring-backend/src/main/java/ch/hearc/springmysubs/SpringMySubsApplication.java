@@ -1,5 +1,9 @@
 package ch.hearc.springmysubs;
 
+import ch.hearc.springmysubs.category.Category;
+import ch.hearc.springmysubs.category.ICategoryDAO;
+import ch.hearc.springmysubs.period.IPeriodDAO;
+import ch.hearc.springmysubs.period.Period;
 import ch.hearc.springmysubs.role.*;
 import ch.hearc.springmysubs.user.IUserDAO;
 import ch.hearc.springmysubs.user.IUserRepository;
@@ -21,10 +25,10 @@ public class SpringMySubsApplication {
     }
 
 
-//    @Bean
-//    CommandLineRunner run(IRoleDAO roleDAO, IUserDAO userDAO, PasswordEncoder passwordEncoder) {
-//        return args ->
-//        {
+    @Bean
+    CommandLineRunner run(IRoleDAO roleDAO, IUserDAO userDAO, IPeriodDAO periodDAO, ICategoryDAO categoryDAO, PasswordEncoder passwordEncoder) {
+        return args ->
+        {
 //            roleDAO.save(new Role(RoleName.USER));
 //            roleDAO.save(new Role(RoleName.ADMIN));
 //            roleDAO.save(new Role(RoleName.SUPERADMIN));
@@ -50,9 +54,23 @@ public class SpringMySubsApplication {
 //            User userSuperAdmin = userDAO.findByUsername("superadminadmin").orElse(null);
 //            userSuperAdmin.getRoles().add(roleSuperAdmin);
 //            userDAO.save(userSuperAdmin);
-//
-//        };
-//    }
+
+
+//            periodDAO.save(new Period("Monthly"));
+//            periodDAO.save(new Period("Yearly"));
+//            periodDAO.save(new Period("Weekly"));
+//            periodDAO.save(new Period("Daily"));
+
+
+//            categoryDAO.save(new Category("Apprentissage"));
+//            categoryDAO.save(new Category("Assurances"));
+//            categoryDAO.save(new Category("Autres"));
+//            categoryDAO.save(new Category("Divertissement"));
+//            categoryDAO.save(new Category("Hébergement"));
+//            categoryDAO.save(new Category("Sport"));
+
+        };
+    }
 
 
 }

@@ -15,9 +15,8 @@ const categoriesApi = createApi({
         // Meaning for reading data from the server, we use queries.
         getCategories: builder.query({
             query: () => ({
-                url: "getCategories",
+                url: "category/",
                 method: "GET",
-                credentials: "include",
             }),
         }),
         // Mutation endpoints:
