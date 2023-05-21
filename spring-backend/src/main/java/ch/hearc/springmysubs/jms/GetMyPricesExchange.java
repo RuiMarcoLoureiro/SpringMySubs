@@ -1,6 +1,8 @@
 package ch.hearc.springmysubs.jms;
 
 
+import ch.hearc.springmysubs.subscription.Subscription;
+import ch.hearc.springmysubs.subscription.SubscriptionName;
 import ch.hearc.springmysubs.subscription.responses.PriceResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.jms.JMSException;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetMyPricesExchange {
-    private PriceResponse lastPriceResponse = null;
+    private PriceResponse lastPriceResponse = new PriceResponse(SubscriptionName.NONE, 0.0);
 
     private ObjectMapper mapper;
 
@@ -26,7 +28,7 @@ public class GetMyPricesExchange {
      * @param jsonMessage
      * @throws JMSException
      */
-    @JmsListener(destination = "${spring.activemq.json-queue-price}")
+    @JmsListener(destination = "queue-price")
     public void readInprogressJsonMessage(final Message jsonMessage) throws JMSException {
 
         System.out.println("Received message " + jsonMessage);

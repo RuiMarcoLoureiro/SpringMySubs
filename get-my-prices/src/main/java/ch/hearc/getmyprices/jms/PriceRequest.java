@@ -5,6 +5,9 @@ import java.io.Serializable;
 public class PriceRequest implements Serializable {
     private SubscriptionName subscriptionName;
 
+    public PriceRequest() {
+    }
+
     public PriceRequest(SubscriptionName subscriptionName) {
         this.subscriptionName = subscriptionName;
     }

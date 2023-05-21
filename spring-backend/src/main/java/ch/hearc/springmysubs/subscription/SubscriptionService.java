@@ -175,7 +175,7 @@ public class SubscriptionService implements ISubscriptionService {
 
     @Override
     public void price(PriceRequest priceRequest) {
-        jmsTemplate.convertAndSend("${spring.activemq.json-queue-subscription}", priceRequest);
+        jmsTemplate.convertAndSend("queue-subscription", priceRequest);
     }
 
     @Override

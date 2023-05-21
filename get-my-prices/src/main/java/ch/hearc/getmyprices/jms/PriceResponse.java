@@ -6,6 +6,8 @@ public class PriceResponse implements Serializable {
     private SubscriptionName subscriptionName;
     private Double price;
 
+    public PriceResponse() {
+    }
     public PriceResponse(SubscriptionName subscriptionName, Double price) {
         this.subscriptionName = subscriptionName;
         this.price = price;

@@ -19,7 +19,12 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public void save(User user) {
-        userRepository.save(user);
+        // save if not exists
+        User existing = userRepository.findByUsername(user.getUsername()).orElse(null);
+        if (user == null)
+        {
+            userRepository.save(user);
+        }
     }
 
     @Override

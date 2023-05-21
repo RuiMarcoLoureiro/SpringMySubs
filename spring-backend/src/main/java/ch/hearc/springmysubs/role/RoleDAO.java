@@ -17,7 +17,11 @@ public class RoleDAO implements IRoleDAO {
 
     @Override
     public void save(Role role) {
-        roleRepository.save(role);
+        // save if not exists
+        if (roleRepository.findByName(role.getName()) == null)
+        {
+            roleRepository.save(role);
+        }
     }
 
     @Override

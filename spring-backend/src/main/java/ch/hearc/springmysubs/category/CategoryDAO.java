@@ -19,7 +19,11 @@ public class CategoryDAO implements ICategoryDAO {
 
     @Override
     public void save(Category category) {
-        categoryRepository.save(category);
+        // save if not exists
+        if (categoryRepository.findByName(category.getName()) == null)
+        {
+            categoryRepository.save(category);
+        }
     }
 
     @Override

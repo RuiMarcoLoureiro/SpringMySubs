@@ -30,7 +30,7 @@ public class SpringMySubsExchange {
      * @param jsonMessage
      * @throws JMSException
      */
-    @JmsListener(destination = "${spring.activemq.json-queue-subscription}")
+    @JmsListener(destination = "queue-subscription")
     public void readInprogressJsonMessage(final Message jsonMessage) throws JMSException {
 
         System.out.println("Received json-q message " + jsonMessage);
@@ -55,7 +55,7 @@ public class SpringMySubsExchange {
                 System.out.println(price);
 
                 // send price to the queue
-                jmsTemplate.convertAndSend("${spring.activemq.json-queue-price}", new PriceResponse(message.getSubscriptionName(), price));
+                jmsTemplate.convertAndSend("queue-price", new PriceResponse(message.getSubscriptionName(), price));
 
             } catch (Exception e) {
                 System.out.println("Error while reading json message");

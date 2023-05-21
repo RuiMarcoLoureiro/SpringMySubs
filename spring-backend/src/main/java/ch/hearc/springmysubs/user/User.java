@@ -59,6 +59,13 @@ public class User extends BaseEntity implements UserDetails {
         this.password = password;
     }
 
+    public void addRole(Role role) {
+        // check if the role is already in the list
+        if (!roles.contains(role)) {
+            roles.add(role);
+        }
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toSet());

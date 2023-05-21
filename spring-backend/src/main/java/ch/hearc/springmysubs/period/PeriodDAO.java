@@ -18,7 +18,11 @@ public class PeriodDAO implements IPeriodDAO{
 
     @Override
     public void save(Period period) {
-        periodRepository.save(period);
+        // save if not exists
+        if (periodRepository.findByName(period.getName()) == null)
+        {
+            periodRepository.save(period);
+        }
     }
 
     @Override
