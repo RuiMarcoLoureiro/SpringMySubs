@@ -1,6 +1,5 @@
 from re import sub
 import re
-from turtle import title
 from flask import Flask, jsonify
 app = Flask(__name__)
 import requests
@@ -28,7 +27,7 @@ def get_price(ticker):
         
         return float(price)
     
-    if ticker == 'NFLX':
+    if ticker == 'NETFLIX':
         URL = 'https://www.netflix.com/ch-fr/'
         page = requests.get(URL)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -49,7 +48,7 @@ def get_price(ticker):
         return float(results)
             
         
-    elif ticker == 'SPOT':
+    elif ticker == 'SPOTIFY':
         URL = 'https://www.spotify.com/ch-fr/premium/'
         page = requests.get(URL)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -66,14 +65,26 @@ def get_price(ticker):
             return price
             
 
-@app.route('/getPrice/<ticker>')
-def getPrice(ticker):
-    return get_price(ticker)
+@app.route('/getPrice/NETFLIX')
+def getNetflixPrice():
+    price = get_price('NETFLIX')
+    return jsonify(price)
+
+@app.route('/getPrice/DISNEY')
+def getDisneyPrice():
+    price = get_price('DISNEY')
+    return jsonify(price)
+
+@app.route('/getPrice/SPOTIFY')
+def getSpotifyPrice():
+    price = get_price('SPOTIFY')
+    return jsonify(price)
+
 
 @app.route('/getAllPrices')
 def getAllPrices():
     disney = get_price('DISNEY')
-    spotify = get_price('SPOT')
-    netlix = get_price('NFLX')
+    spotify = get_price('SPOTIFY')
+    netlix = get_price('NETFLIX')
     
     return jsonify({'disney': disney, 'spotify': spotify, 'netflix': netlix})
