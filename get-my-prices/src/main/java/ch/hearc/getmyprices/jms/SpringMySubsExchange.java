@@ -2,19 +2,27 @@ package ch.hearc.getmyprices.jms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.JmsListener;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.TextMessage;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class SpringMySubsExchange {
     private final ObjectMapper mapper;
 
+    private final WebClient localApiClient;
+    private final JmsTemplate jmsTemplate;
+
     @Autowired
-    public SpringMySubsExchange(ObjectMapper mapper) {
+    public SpringMySubsExchange(ObjectMapper mapper, WebClient localApiClient, JmsTemplate jmsTemplate) {
         this.mapper = mapper;
+        this.localApiClient = localApiClient;
+        this.jmsTemplate = jmsTemplate;
     }
 
     /**
@@ -22,7 +30,7 @@ public class SpringMySubsExchange {
      * @param jsonMessage
      * @throws JMSException
      */
-    @JmsListener(destination = "${spring.activemq.json-queue}")
+    @JmsListener(destination = "${spring.activemq.json-queue-subscription}")
     public void readInprogressJsonMessage(final Message jsonMessage) throws JMSException {
 
         System.out.println("Received json-q message " + jsonMessage);
@@ -38,7 +46,16 @@ public class SpringMySubsExchange {
 
                 System.out.println(message);
 
-                // TODO : call the service to get the price
+                Double price = localApiClient.get()
+                        .uri("/getPrice/{service}", message.getSubscriptionName())
+                        .retrieve()
+                        .bodyToMono(Double.class)
+                        .block();
+
+                System.out.println(price);
+
+                // send price to the queue
+                jmsTemplate.convertAndSend("${spring.activemq.json-queue-price}", new PriceResponse(message.getSubscriptionName(), price));
 
             } catch (Exception e) {
                 System.out.println("Error while reading json message");

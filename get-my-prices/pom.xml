@@ -73,6 +73,12 @@
 			<version>2.15.0-rc2</version>
 		</dependency>
 
+		<!-- spring-boot-starter-webflux -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -1,9 +1,7 @@
 package ch.hearc.springmysubs.subscription;
 
-import ch.hearc.springmysubs.subscription.requests.PriceRequest;
-import ch.hearc.springmysubs.subscription.requests.SortFilterRequest;
-import ch.hearc.springmysubs.subscription.requests.UsersNotSubbedRequest;
-import ch.hearc.springmysubs.subscription.requests.UsersSubbedRequest;
+import ch.hearc.springmysubs.subscription.requests.*;
+import ch.hearc.springmysubs.subscription.responses.PriceResponse;
 import ch.hearc.springmysubs.subscription.responses.UsersNotSubbedResponse;
 import ch.hearc.springmysubs.subscription.responses.UsersSubbedResponse;
 
@@ -19,4 +17,5 @@ public interface ISubscriptionService {
     public List<UsersSubbedResponse> usersSubbed(UsersSubbedRequest usersSubbedRequest);
     public List<UsersNotSubbedResponse> usersNotSubbed(UsersNotSubbedRequest usersNotSubbedRequest);
     public void price(PriceRequest priceRequest);
+    public PriceResponse lastPrice();
 }

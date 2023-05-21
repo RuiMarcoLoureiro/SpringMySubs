@@ -4,6 +4,7 @@ import ch.hearc.springmysubs.subscription.requests.PriceRequest;
 import ch.hearc.springmysubs.subscription.requests.SortFilterRequest;
 import ch.hearc.springmysubs.subscription.requests.UsersNotSubbedRequest;
 import ch.hearc.springmysubs.subscription.requests.UsersSubbedRequest;
+import ch.hearc.springmysubs.subscription.responses.PriceResponse;
 import ch.hearc.springmysubs.subscription.responses.UsersNotSubbedResponse;
 import ch.hearc.springmysubs.subscription.responses.UsersSubbedResponse;
 import jakarta.validation.Valid;
@@ -86,5 +87,10 @@ public class SubscriptionController {
             @RequestBody PriceRequest priceRequest
     ) {
         subscriptionService.price(priceRequest);
+    }
+
+    @GetMapping("/lastPrice")
+    public PriceResponse lastPrice() {
+        return subscriptionService.lastPrice();
     }
 }

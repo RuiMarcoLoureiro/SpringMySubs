@@ -1,10 +1,9 @@
 package ch.hearc.springmysubs.subscription;
 
+import ch.hearc.springmysubs.jms.GetMyPricesExchange;
 import ch.hearc.springmysubs.security.CurrentUserService;
-import ch.hearc.springmysubs.subscription.requests.PriceRequest;
-import ch.hearc.springmysubs.subscription.requests.SortFilterRequest;
-import ch.hearc.springmysubs.subscription.requests.UsersNotSubbedRequest;
-import ch.hearc.springmysubs.subscription.requests.UsersSubbedRequest;
+import ch.hearc.springmysubs.subscription.requests.*;
+import ch.hearc.springmysubs.subscription.responses.PriceResponse;
 import ch.hearc.springmysubs.subscription.responses.UsersNotSubbedResponse;
 import ch.hearc.springmysubs.subscription.responses.UsersSubbedResponse;
 import ch.hearc.springmysubs.subscriptionUser.ISubscriptionUserDAO;
@@ -29,6 +28,7 @@ public class SubscriptionService implements ISubscriptionService {
     private final IUserDAO userDAO;
     private final CurrentUserService currentUserService;
     private JmsTemplate jmsTemplate;
+    private final GetMyPricesExchange getMyPricesExchange;
     private final ISubscriptionMapper subscriptionMapper;
     private final ISubscriptionUserMapper subscriptionUserMapper;
     private final IUserMapper userMapper;
@@ -40,6 +40,7 @@ public class SubscriptionService implements ISubscriptionService {
             ISubscriptionUserDAO subscriptionUserDAO,
             CurrentUserService currentUserService,
             JmsTemplate jmsTemplate,
+            GetMyPricesExchange getMyPricesExchange,
             ISubscriptionMapper subscriptionMapper,
             ISubscriptionUserMapper subscriptionUserMapper,
             IUserMapper userMapper
@@ -49,6 +50,7 @@ public class SubscriptionService implements ISubscriptionService {
         this.subscriptionUserDAO = subscriptionUserDAO;
         this.currentUserService = currentUserService;
         this.jmsTemplate = jmsTemplate;
+        this.getMyPricesExchange = getMyPricesExchange;
         this.subscriptionMapper = subscriptionMapper;
         this.subscriptionUserMapper = subscriptionUserMapper;
         this.userMapper = userMapper;
@@ -173,7 +175,13 @@ public class SubscriptionService implements ISubscriptionService {
 
     @Override
     public void price(PriceRequest priceRequest) {
-        jmsTemplate.convertAndSend("${spring.activemq.json-queue}", priceRequest);
+        jmsTemplate.convertAndSend("${spring.activemq.json-queue-subscription}", priceRequest);
+    }
+
+    @Override
+    public PriceResponse lastPrice()
+    {
+        return getMyPricesExchange.getLastPriceResponse();
     }
 
 
