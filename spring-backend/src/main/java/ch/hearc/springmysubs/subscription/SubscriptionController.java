@@ -1,6 +1,10 @@
 package ch.hearc.springmysubs.subscription;
 
 import ch.hearc.springmysubs.subscription.requests.SortFilterRequest;
+import ch.hearc.springmysubs.subscription.requests.UsersNotSubbedRequest;
+import ch.hearc.springmysubs.subscription.requests.UsersSubbedRequest;
+import ch.hearc.springmysubs.subscription.responses.UsersNotSubbedResponse;
+import ch.hearc.springmysubs.subscription.responses.UsersSubbedResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +60,24 @@ public class SubscriptionController {
             @RequestBody SortFilterRequest sortFilterRequest
     ) {
         return subscriptionService.sortFilterSubscriptions(sortFilterRequest);
+    }
+
+    /**
+     * Get all users subscribed to a given subscription
+     *
+     * @param  usersSubbedRequest
+     */
+    @PostMapping("/usersSubbed")
+    public List<UsersSubbedResponse> usersSubbed(
+            @RequestBody UsersSubbedRequest usersSubbedRequest
+    ) {
+        return subscriptionService.usersSubbed(usersSubbedRequest);
+    }
+
+    @PostMapping("/usersNotSubbed")
+    public List<UsersNotSubbedResponse> usersNotSubbed(
+            @RequestBody UsersNotSubbedRequest usersNotSubbedRequest
+    ) {
+        return subscriptionService.usersNotSubbed(usersNotSubbedRequest);
     }
 }

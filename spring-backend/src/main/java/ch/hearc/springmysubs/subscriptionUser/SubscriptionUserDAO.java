@@ -1,5 +1,6 @@
 package ch.hearc.springmysubs.subscriptionUser;
 
+import ch.hearc.springmysubs.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,4 +45,21 @@ public class SubscriptionUserDAO implements ISubscriptionUserDAO{
     public List<SubscriptionUser> findAllByUserId(Long userId) {
         return subscriptionUserRepository.findAllByUserId(userId);
     }
+
+    @Override
+    public List<User> findAllBySubscriptionId(Long subscriptionId) {
+        return subscriptionUserRepository.findAllBySubscriptionId(subscriptionId);
+    }
+
+    @Override
+    public List<SubscriptionUser> findAllAcceptedBySubscriptionId(Long subscriptionId) {
+        return subscriptionUserRepository.findAllAcceptedBySubscriptionId(subscriptionId);
+    }
+
+    @Override
+    public List<SubscriptionUser> findAllNotAcceptedBySubscriptionId(Long subscriptionId) {
+        return subscriptionUserRepository.findAllNotAcceptedBySubscriptionId(subscriptionId);
+    }
+
+
 }

@@ -8,10 +8,10 @@ const initialState = {
     },
     filter: {
         categories_id: 1,
-        name: "Entertainment",
+        name: "Apprentissage",
     },
     sort: {
-        sortColumn: null,
+        sortColumn: "name",
         sortASC: false,
     },
     theme: {
