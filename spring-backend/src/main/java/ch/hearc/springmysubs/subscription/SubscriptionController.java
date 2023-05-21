@@ -1,5 +1,6 @@
 package ch.hearc.springmysubs.subscription;
 
+import ch.hearc.springmysubs.subscription.requests.PriceRequest;
 import ch.hearc.springmysubs.subscription.requests.SortFilterRequest;
 import ch.hearc.springmysubs.subscription.requests.UsersNotSubbedRequest;
 import ch.hearc.springmysubs.subscription.requests.UsersSubbedRequest;
@@ -8,7 +9,6 @@ import ch.hearc.springmysubs.subscription.responses.UsersSubbedResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class SubscriptionController {
     /**
      * Get all subscriptions for the current user sorted by a given column (name or cost) filtered by a given category
      *
-     * @param  sortFilterRequest
+     * @param sortFilterRequest
      */
     @PostMapping("/sortFilterSubscriptions")
     public List<SubscriptionDTO> sortFilterSubscriptions(
@@ -65,7 +65,7 @@ public class SubscriptionController {
     /**
      * Get all users subscribed to a given subscription
      *
-     * @param  usersSubbedRequest
+     * @param usersSubbedRequest
      */
     @PostMapping("/usersSubbed")
     public List<UsersSubbedResponse> usersSubbed(
@@ -79,5 +79,12 @@ public class SubscriptionController {
             @RequestBody UsersNotSubbedRequest usersNotSubbedRequest
     ) {
         return subscriptionService.usersNotSubbed(usersNotSubbedRequest);
+    }
+
+    @PostMapping("/price")
+    public void price(
+            @RequestBody PriceRequest priceRequest
+    ) {
+        subscriptionService.price(priceRequest);
     }
 }
