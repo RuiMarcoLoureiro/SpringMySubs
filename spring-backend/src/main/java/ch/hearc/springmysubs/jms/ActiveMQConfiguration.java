@@ -1,4 +1,4 @@
-package ch.hearc.getmyprices.jms;
+package ch.hearc.springmysubs.jms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
