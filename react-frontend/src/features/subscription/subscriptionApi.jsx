@@ -1,7 +1,6 @@
 /* React-specific entry point that automatically generates
    hooks corresponding to the defined endpoints */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import values from "lodash.values";
 
 import { apiBaseUrl } from "../../app/constants";
 
@@ -10,38 +9,38 @@ const subscriptionApi = createApi({
     reducerPath: subscriptionApiName,
     baseQuery: fetchBaseQuery({
         baseUrl: apiBaseUrl,
+        prepareHeaders: (headers, { getState }) => {
+            const { token } = getState().auth.user;
+            if (token) {
+                headers.set("authorization", `Bearer ${token}`);
+            }
+            return headers;
+        }
     }),
     tagTypes: ["Users"],
     endpoints: (builder) => ({
         // Query endpoints: They are endpoints for requests that retrieve data.
         // Meaning for reading data from the server, we use queries.
         showSubscriptions: builder.query({
-            query: ({ id }) => ({
-                url: "showSubscriptions",
-                method: "POST",
-                credentials: "include",
-                body: { id },
+            query: () => ({
+                url: "subscription/",
+                method: "GET",
             }),
-            // Transform and normalize API response
-            transformResponse: (response) => {
-                // rename subscriptions_id to id
-                return response.map((row) => {
-                    return { ...row, id: row.subscriptions_id };
-                });
-            },
         }),
         sortFilterSubscriptions: builder.query({
-            query: ({ id, categories_id, sortColumn, sortASC = true }) => ({
-                url: "sortFilterSubscriptions",
+            query: ({ categories_id, sortColumn, sortASC = true }) => ({
+                url: "subscription/sortFilterSubscriptions",
                 method: "POST",
-                credentials: "include",
-                body: { id, categories_id, sortColumn, sortASC },
+                body: { categoryId: categories_id, sortColumn, sortASC },
             }),
             // Transform and normalize API response
             transformResponse: (response) => {
-                // rename subscriptions_id to id
                 return response.map((row) => {
-                    return { ...row, id: row.subscriptions_id };
+                    return { 
+                        ...row, 
+                        periods_id: row.period.id,
+                        categories_id: row.category.id,
+                    };
                 });
             },
         }),
@@ -49,32 +48,53 @@ const subscriptionApi = createApi({
         // Meaning for reading data from the server, we use queries.
         subscriptionUsersSubbed: builder.query({
             query: ({ subscriptions_id }) => ({
-                url: "usersSubbed",
+                url: "subscription/usersSubbed",
                 method: "POST",
-                credentials: "include",
-                body: { subscriptions_id },
-            }),
-            providesTags: ["Users"],
-        }),
-        subscriptionUsersNotSubbed: builder.query({
-            query: ({ subscriptions_id }) => ({
-                url: "usersNotSubbed",
-                method: "POST",
-                credentials: "include",
-                body: { subscriptions_id },
+                body: { subscriptionId: subscriptions_id },
             }),
             providesTags: ["Users"],
             // Transform and normalize API response
             transformResponse: (response) => {
-                return values(response);
+                let formattedResponse = []
+                response.map((row) => {
+                    formattedResponse.push({
+                        id : row.subscription.id,
+                        name: row.user.username,
+                        users_id: row.user.id,
+                        subscriptions_id: row.subscription.id,
+                        accepted: row.subscriptionUser.accepted
+                    });
+                });
+                return formattedResponse;
+            },
+        }),
+        subscriptionUsersNotSubbed: builder.query({
+            query: ({ subscriptions_id }) => ({
+                url: "subscription/usersNotSubbed",
+                method: "POST",
+                body: { subscriptionId: subscriptions_id },
+            }),
+            providesTags: ["Users"],
+            // Transform and normalize API response
+            transformResponse: (response) => {
+                let formattedResponse = []
+                response.map((row) => {
+                    formattedResponse.push({
+                        id : row.subscription.id,
+                        name: row.user.username,
+                        users_id: row.user.id,
+                        subscriptions_id: row.subscription.id,
+                        accepted: row.subscriptionUser.accepted
+                    });
+                });
+                return formattedResponse;
             },
         }),
         subscriptionTotalUsersSubbed: builder.query({
             query: ({ subscriptions_id }) => ({
-                url: "usersSubbed",
+                url: "subscription/usersSubbed",
                 method: "POST",
-                credentials: "include",
-                body: { subscriptions_id },
+                body: { subscriptionId: subscriptions_id },
             }),
             transformResponse: (response) => {
                 return { total: response.length };
@@ -84,39 +104,45 @@ const subscriptionApi = createApi({
         // As opposed to queries, mutations endpoints are used for creating, updating, and deleting data.
         addSubscription: builder.mutation({
             query: ({
-                id,
                 name,
                 cost,
                 periods_id,
                 categories_id,
-                accepted,
             }) => ({
-                url: "addSubscription",
-                method: "POST",
-                credentials: "include",
-                body: { id, name, cost, periods_id, categories_id, accepted },
+                url: "subscription/",
+                method: "PUT",
+                body: {
+                    name,
+                    cost,
+                    category: {
+                        id: categories_id,
+                        name: "dummy",
+                    },
+                    period: {
+                        id: periods_id,
+                        name: "dummy",
+                    },
+                },
             }),
         }),
         updateSubscription: builder.mutation({
             query: ({ id, name, cost, periods_id, categories_id }) => ({
-                url: "updateSubscription",
+                url: "subscription/updateSubscription",
                 method: "POST",
-                credentials: "include",
                 body: { id, name, cost, periods_id, categories_id },
             }),
         }),
         deleteSubscription: builder.mutation({
             query: ({ subscriptions_id, users_id }) => ({
-                url: "deleteSubscription",
+                url: "subscription/deleteSubscription",
                 method: "POST",
-                credentials: "include",
                 body: { subscriptions_id, users_id },
             }),
             invalidatesTags: ["Users"],
         }),
         shareSubscription: builder.mutation({
             query: ({ subscriptions_id, users_id, accepted = 1 }) => ({
-                url: "shareSubscription",
+                url: "subscription/shareSubscription",
                 method: "POST",
                 credentials: "include",
                 body: { subscriptions_id, users_id, accepted },

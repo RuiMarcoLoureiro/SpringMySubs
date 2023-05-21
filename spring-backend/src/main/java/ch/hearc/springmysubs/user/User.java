@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"roles", "subscriptionUsers"})
 @EqualsAndHashCode(callSuper = true) // Take into account the parent attributes in equals and hashcode
 public class User extends BaseEntity implements UserDetails {
     @Id
