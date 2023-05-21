@@ -46,6 +46,12 @@ const subscriptionApi = createApi({
         }),
         // Query endpoints: They are endpoints for requests that retrieve data.
         // Meaning for reading data from the server, we use queries.
+        lastPrice: builder.query({
+            query: () => ({
+                url: "subscription/lastPrice",
+                method: "GET",
+            }),
+        }),
         subscriptionUsersSubbed: builder.query({
             query: ({ subscriptions_id }) => ({
                 url: "subscription/usersSubbed",
@@ -144,11 +150,17 @@ const subscriptionApi = createApi({
             query: ({ subscriptions_id, users_id, accepted = 1 }) => ({
                 url: "subscription/shareSubscription",
                 method: "POST",
-                credentials: "include",
                 body: { subscriptions_id, users_id, accepted },
             }),
             invalidatesTags: ["Users"],
         }),
+        askPrice: builder.mutation({
+            query: ({ subscription_name, }) => ({
+                url: "subscription/price",
+                method: "POST",
+                body: { subscriptionName: subscription_name },
+            }),
+        })
     }),
 });
 
@@ -163,4 +175,6 @@ export const {
     useUpdateSubscriptionMutation,
     useDeleteSubscriptionMutation,
     useShareSubscriptionMutation,
+    useAskPriceMutation,
+    useLastPriceQuery
 } = subscriptionApi;

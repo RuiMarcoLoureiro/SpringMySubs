@@ -9,13 +9,13 @@ const periodsApi = createApi({
     reducerPath: periodsApiName,
     baseQuery: fetchBaseQuery({
         baseUrl: apiBaseUrl,
-        prepareHeaders: (headers, { getState }) => {
-            const { token } = getState().auth.user;
-            if (token) {
-                headers.set("authorization", `Bearer ${token}`);
-            }
-            return headers;
-        }
+        // prepareHeaders: (headers, { getState }) => {
+        //     const { token } = getState().auth.user;
+        //     if (token) {
+        //         headers.set("authorization", `Bearer ${token}`);
+        //     }
+        //     return headers;
+        // }
     }),
     endpoints: (builder) => ({
         // Query endpoints: They are endpoints for requests that retrieve data.

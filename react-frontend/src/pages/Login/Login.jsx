@@ -25,8 +25,8 @@ const validationSchema = yup.object({
         .required("Le mot de passe est requis"),
 });
 
-const defaultName = "admin";
-const defaultPassword = "adminPassword";
+const defaultName = "";
+const defaultPassword = "";
 
 const Login = () => {
     const [login, { isLoading }] = useLoginMutation();

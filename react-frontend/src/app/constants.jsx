@@ -14,3 +14,4 @@ export const subscriptionsPath = `${protectedPath}/subscriptions`;
 export const createSubscriptionPath = `${subscriptionsPath}/create`;
 export const modifySubscriptionPath = `${subscriptionsPath}/modify`;
 export const shareSubscriptionPath = `${subscriptionsPath}/share`;
+export const priceDemandPath = `${subscriptionsPath}/priceDemand`;
