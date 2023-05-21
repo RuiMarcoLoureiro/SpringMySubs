@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"users"})
 @EqualsAndHashCode(callSuper = true) // Take into account the parent attributes in equals and hashcode
 public class Role extends BaseEntity {
     @Id

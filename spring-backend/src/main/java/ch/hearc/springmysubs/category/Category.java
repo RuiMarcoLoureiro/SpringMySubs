@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"subscriptions"})
 @EqualsAndHashCode(callSuper = true) // Take into account the parent attributes in equals and hashcode
 public class Category extends BaseEntity {
     @Id
