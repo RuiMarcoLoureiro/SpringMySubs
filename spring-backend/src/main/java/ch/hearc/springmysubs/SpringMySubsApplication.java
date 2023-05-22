@@ -28,17 +28,6 @@ public class SpringMySubsApplication {
         SpringApplication.run(SpringMySubsApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
-            }
-        };
-    }
-
-
     // Insert data on startup
     @Bean
     CommandLineRunner run(IRoleDAO roleDAO, IUserDAO userDAO, IPeriodDAO periodDAO, ICategoryDAO categoryDAO, PasswordEncoder passwordEncoder) {

@@ -26,6 +26,7 @@ import {
 	selectFilterCategory,
 	selectSort,
 } from "../../features/settings/settingsSelector";
+import { last } from "lodash";
 
 const renderComponent = (item, index) => {
 	return <SubscriptionsListItem key={index} subscription={item} />;
@@ -86,9 +87,19 @@ const Subscriptions = () => {
 					<AlertTitle>
 						Dernière demande de prix de la part d'un utilisateur
 					</AlertTitle>
-					<strong>{lastPrice?.subscriptionName}</strong> est
-					actuellement à <strong>{lastPrice?.price} CHF </strong>
-					par mois !
+					{lastPrice?.subscriptionName === "NONE" ? (
+						<strong>
+							Aucune demande de prix n'a été effectuée par un
+							utilisateur
+						</strong>
+					) : (
+						<Fragment>
+							<strong>{lastPrice?.subscriptionName}</strong> est
+							actuellement à{" "}
+							<strong>{lastPrice?.price} CHF </strong>
+							par mois !
+						</Fragment>
+					)}
 				</Alert>
 				<Box sx={{ my: 2, mx: 1 }}>
 					<SearchBar onChange={handleConditionChange} />

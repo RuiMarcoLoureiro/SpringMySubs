@@ -49,7 +49,9 @@ public class Subscription extends BaseEntity {
     @OneToMany(
             mappedBy = "subscription", // subscription is the name of the attribute in the SubscriptionUser class
             fetch = FetchType.EAGER, // load all the data when loading the role
-            cascade = CascadeType.ALL, // propagate all operations (persist, remove, refresh, merge, detach) to the relating entities
+            cascade =  {
+                    CascadeType.MERGE, CascadeType.REMOVE
+            }, // propagate all operations (merge, remove) to the relating entities
             orphanRemoval = true // delete the SubscriptionUser when the Subscription is deleted
     )
     @EqualsAndHashCode.Exclude

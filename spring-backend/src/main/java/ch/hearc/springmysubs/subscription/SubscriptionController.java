@@ -45,8 +45,9 @@ public class SubscriptionController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSubscription(@PathVariable SubscriptionDTO subscriptionDTO) {
-        // Will automatically extract the id from the subscriptionDTO
+    public void deleteSubscription(@PathVariable Long id) {
+        SubscriptionDTO subscriptionDTO = new SubscriptionDTO();
+        subscriptionDTO.setId(id);
         subscriptionService.deleteSubscription(subscriptionDTO);
     }
 

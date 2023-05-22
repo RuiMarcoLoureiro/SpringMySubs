@@ -19,7 +19,7 @@ public class SubscriptionUser extends BaseEntity {
     private SubscriptionUserPK id;
 
     @NotNull
-    private Boolean accepted = false;
+    private Boolean accepted = true;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
